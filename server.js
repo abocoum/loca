@@ -21,6 +21,7 @@ const favicon = require('serve-favicon');
 const methodOverride = require('method-override');
 const bodyParser = require('body-parser');
 const session = require('express-session');
+const MongoStore = require('connect-mongo')(session);
 
 const errorHandler = require('errorhandler');
 const passport = require('passport');
@@ -68,7 +69,8 @@ app.use(session({
     cookie: {
         //      min  s     ms
         maxAge: 10 * 60 * 1000 // 10 minutes
-    }
+    },
+    store: new MongoStore({url: config.database})
 }));
 app.use(passport.initialize());
 app.use(passport.session());
